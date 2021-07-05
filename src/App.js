@@ -5,21 +5,34 @@ class App extends Component {
     super(props);
     this.state = {
       invitados: [],
+      nombre: '',
+      apellido: '',
     };
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleFirstName = this.handleFirstName.bind(this);
+    this.handleLastName = this.handleLastName.bind(this);
   }
+
+  handleFirstName = (e) => {
+    this.setState({
+      nombre: e.target.value,
+    });
+  };
+
+  handleLastName = (e) => {
+    this.setState({
+      apellido: e.target.value,
+    });
+  };
 
   handleSubmit = (event) => {
     event.preventDefault();
-    const firstName = event.target.elements['first-name'];
-    const lastName = event.target.elements['last-name'];
-
     this.setState({
       invitados: [
         ...this.state.invitados,
         {
-          nombre: firstName.value,
-          apellido: lastName.value,
+          nombre: this.state.nombre,
+          apellido: this.state.apellido,
         },
       ],
     });
@@ -35,12 +48,24 @@ class App extends Component {
             <form onSubmit={this.handleSubmit}>
               <div className="form-group">
                 <label htmlFor="first-name">Nombre</label>
-                <input type="text" className="form-control" name="first-name" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="first-name"
+                  onChange={this.handleFirstName}
+                  value={this.state.nombre}
+                />
               </div>
 
               <div className="form-group">
                 <label htmlFor="last-name">Apellido</label>
-                <input type="text" className="form-control" name="last-name" />
+                <input
+                  type="text"
+                  className="form-control"
+                  name="last-name"
+                  onChange={this.handleLastName}
+                  value={this.state.apellido}
+                />
               </div>
 
               <div className="action">
