@@ -1,59 +1,53 @@
 import React, { Component } from 'react';
 
 class App extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
+
     this.state = {
-      invitados: [],
-      nombre: '',
-      apellido: '',
+      guests: [],
+      firstName: '',
+      lastName: '',
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleFirstName = this.handleFirstName.bind(this);
-    this.handleLastName = this.handleLastName.bind(this);
+  }
+  handleFirstName(event) {
+    this.setState({
+      firstName: event.target.value,
+    });
   }
 
-  handleFirstName = (e) => {
+  handleLastName(event) {
     this.setState({
-      nombre: e.target.value,
+      lastName: event.target.value,
     });
-  };
+  }
 
-  handleLastName = (e) => {
-    this.setState({
-      apellido: e.target.value,
-    });
-  };
-
-  handleSubmit = (event) => {
+  handleSave(event) {
     event.preventDefault();
     this.setState({
-      invitados: [
-        ...this.state.invitados,
-        {
-          nombre: this.state.nombre,
-          apellido: this.state.apellido,
-        },
-      ],
+      guests: this.state.guests.concat({
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+      }),
+      firstName: '',
+      lastName: '',
     });
-    event.target.reset();
-  };
-
+  }
   render() {
-    const { invitados } = this.state;
+    const { guests } = this.state;
     return (
       <div className="container">
         <div className="row">
           <div className="col-sm-6 col-sm-offset-3">
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={this.handleSave.bind(this)}>
               <div className="form-group">
                 <label htmlFor="first-name">Nombre</label>
                 <input
                   type="text"
                   className="form-control"
                   name="first-name"
-                  onChange={this.handleFirstName}
-                  value={this.state.nombre}
+                  value={this.state.firstName}
+                  onChange={this.handleFirstName.bind(this)}
                 />
               </div>
 
@@ -63,8 +57,8 @@ class App extends Component {
                   type="text"
                   className="form-control"
                   name="last-name"
-                  onChange={this.handleLastName}
-                  value={this.state.apellido}
+                  value={this.state.lastName}
+                  onChange={this.handleLastName.bind(this)}
                 />
               </div>
 
@@ -83,14 +77,12 @@ class App extends Component {
                 </tr>
               </thead>
               <tbody>
-                {invitados.map((invitado, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{invitado.nombre}</td>
-                      <td>{invitado.apellido}</td>
-                    </tr>
-                  );
-                })}
+                {guests.map((guest, index) => (
+                  <tr key={index}>
+                    <td>{guest.firstName}</td>
+                    <td>{guest.lastName}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           </div>
